@@ -4,13 +4,14 @@ import tempfile
 import subprocess
 from sdf_cli.install import install_binary
 from sdf_cli import SDF_CLI_VERSION
+import shutil
 
 @pytest.fixture
 def install_dir():
     """Create a temporary directory for installation."""
     dirpath = tempfile.mkdtemp()
     yield dirpath
-    # shutil.rmtree(dirpath)
+    shutil.rmtree(dirpath)
 
 def test_download_binary(install_dir):
     """Test the download_binary function."""
