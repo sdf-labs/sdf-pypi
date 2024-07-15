@@ -1,0 +1,69 @@
+name: "Release to GitHub and PyPI"
+run-name: "Release ${{ inputs.versionNumber }} to GitHub and PyPI"
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionNumber:
+        description: "Version Number (ie 5.5.0)"
+        type: string
+        required: true
+      dryRun:
+        description: "Dry Run"
+        type: boolean
+        default: false
+        required: false
+  workflow_call:
+    inputs:
+      versionNumber:
+        description: "Version Number (ie 5.5.0)"
+        type: string
+        required: true
+      dryRun:
+        description: "Dry Run"
+        type: boolean
+        default: false
+        required: false
+    secrets:
+      CICD_APP_ID:
+        required: true
+      CICD_APP_PRIVATE_KEY:
+        required: true
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  create_git_release:
+    name: "Create Git Release 🕊️"
+    uses: ./.github/workflows/step.create_git_release.yml
+    secrets:
+      CICD_APP_ID: ${{ secrets.CICD_APP_ID }}
+      CICD_APP_PRIVATE_KEY: ${{ secrets.CICD_APP_PRIVATE_KEY }}
+    with:
+      versionNumber: ${{ github.event.inputs.versionNumber }}
+      dryRun: ${{ github.event.inputs.dryRun == 'true' }}
+
+  build_test_package:
+    name: Build, Test, Package
+    needs: [create_git_release]
+    uses: ./.github/workflows/step.build.yml
+    with:
+      versionNumber: ${{ needs.create_git_release.outputs.releaseVersionNumber }}
+      dryRun: ${{ github.event.inputs.dryRun == 'true' }}
+
+  pypi_release:
+    name: PyPI Release
+    needs: [create_git_release, build_test_package]
+    uses: ./.github/workflows/step.release_pypi.yml
+    with:
+      version_number: ${{ inputs.versionNumber }}
+      dryRun: ${{ github.event.inputs.dryRun == 'true' }}
+
+    secrets:
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      TEST_PYPI_API_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}

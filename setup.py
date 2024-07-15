@@ -85,6 +85,7 @@ setup(
     classifiers=[
         'Programming Language :: Python :: 3',
     ],
+    license='Proprietary - See Terms of Service: https://www.sdf.com/terms-of-service',
     cmdclass={
         "install": PostInstallCommand,
     },
