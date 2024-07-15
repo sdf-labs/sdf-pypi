@@ -24,6 +24,11 @@ on:
         type: boolean
         default: false
         required: false
+    secrets:
+      CICD_APP_ID:
+        required: true
+      CICD_APP_PRIVATE_KEY:
+        required: true
 
 permissions:
   contents: write
@@ -53,11 +58,8 @@ jobs:
 
   pypi_release:
     name: PyPI Release
-
-    needs: [github-release]
-
+    needs: [create_git_release, build_test_package]
     uses: ./.github/workflows/step.release_pypi.yml
-
     with:
       version_number: ${{ inputs.versionNumber }}
       dryRun: ${{ github.event.inputs.dryRun == 'true' }}
