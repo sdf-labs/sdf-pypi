@@ -39,6 +39,10 @@ jobs:
           python -m pip install pytest
           python -m pip --version
 
+      - name: "Replace Version In Source Code"
+        run: |
+          sed -i "s/^SDF_CLI_VERSION = \".*\"/SDF_CLI_VERSION = \"${{ github.event.inputs.versionNumber }}\"/" sdf_cli/version.py
+
       - name: "Run Tox"
         run: pytest
 
