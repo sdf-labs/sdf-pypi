@@ -74,10 +74,10 @@ jobs:
         run: |
           twine check dist/*
 
-      - name: "Upload Build Artifact - ${{ inputs.versionNumber }}"
+      - name: "Upload Build Artifact - ${{ github.event.inputs.versionNumber }}"
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.versionNumber }}
+          name: ${{ github.event.inputs.versionNumber }}
           path: |
             ./dist/
           retention-days: 1
@@ -98,10 +98,10 @@ jobs:
           python -m pip install --upgrade wheel
           python -m pip --version
 
-      - name: "Download Build Artifact - ${{ inputs.versionNumber }}"
+      - name: "Download Build Artifact - ${{ github.event.inputs.versionNumber }}"
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.versionNumber }}
+          name: ${{ github.event.inputs.versionNumber }}
           path: .
 
       - name: "[DEBUG] Display Structure Of All Downloaded Files"
