@@ -78,7 +78,6 @@ jobs:
         with:
           name: ${{ inputs.versionNumber }}
           path: |
-            ${{ inputs.changelog_path }}
             ./dist/
             !dist/sdf_cli-${{ inputs.versionNumber }}.tar.gz
           retention-days: 1
