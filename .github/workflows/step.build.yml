@@ -115,4 +115,5 @@ jobs:
 
       - name: "[DEBUG] Check Source Distributions"
         run: |
+          source venv/bin/activate
           sdf --version
