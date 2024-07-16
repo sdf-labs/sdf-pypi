@@ -24,12 +24,6 @@ permissions:
   contents: read
 
 jobs:
-  sanitize-package-name:
-    runs-on: ubuntu-latest
-
-    outputs:
-      name: ${{ steps.package-name.outputs.name }}
-
   test-pypi-release:
     runs-on: ubuntu-latest
     if: inputs.dryRun == true
@@ -37,17 +31,17 @@ jobs:
     environment: PypiTest
 
     steps:
-      - name: "Download Build Artifact - ${{ inputs.version_number }}"
+      - name: "Download Build Artifact - ${{ inputs.versionNumber }}"
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.version_number }}
-          path: .
+          name: ${{ inputs.versionNumber }}
+          path: ./dist/
 
-      - name: "Publish sdf_cli v${{ inputs.version_number }} To Test PyPI"
+      - name: "Publish sdf_cli v${{ inputs.versionNumber }} To Test PyPI"
         uses: pypa/gh-action-pypi-publish@v1.8.5
         with:
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository_url: https://test.pypi.org/legacy/
+          repository-url: https://test.pypi.org/legacy/
 
   prod-pypi-release:
     runs-on: ubuntu-latest
@@ -56,13 +50,13 @@ jobs:
     environment: PypiProd
 
     steps:
-      - name: "Download Build Artifact - ${{ inputs.version_number }}"
+      - name: "Download Build Artifact - ${{ inputs.versionNumber }}"
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.version_number }}
-          path: .
+          name: ${{ inputs.versionNumber }}
+          path: ./dist/
 
-      - name: "Publish sdf_cli v${{ inputs.version_number }} To PyPI"
+      - name: "Publish sdf_cli v${{ inputs.versionNumber }} To PyPI"
         uses: pypa/gh-action-pypi-publish@v1.8.5
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}

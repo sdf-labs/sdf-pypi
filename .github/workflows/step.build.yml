@@ -16,12 +16,13 @@ on:
 permissions:
   contents: write
 
+env:
+  SDF_CLI_VERSION: ${{ github.event.inputs.versionNumber }}
+
 jobs:
   unit:
     name: Unit Test
     runs-on: ubuntu-latest
-    env:
-      SDF_CLI_VERSION: ${{ github.event.inputs.versionNumber }}
 
     steps:
       - name: "Checkout ${{ github.repository }} Commit"
@@ -73,14 +74,12 @@ jobs:
         run: |
           twine check dist/*
 
-      - name: "Upload Build Artifact - ${{ inputs.versionNumber }}"
+      - name: "Upload Build Artifact - ${{ github.event.inputs.versionNumber }}"
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.versionNumber }}
+          name: ${{ github.event.inputs.versionNumber }}
           path: |
-            ${{ inputs.changelog_path }}
             ./dist/
-            !dist/sdf_cli-${{ inputs.versionNumber }}.tar.gz
           retention-days: 1
 
   test-build:
@@ -99,22 +98,22 @@ jobs:
           python -m pip install --upgrade wheel
           python -m pip --version
 
-      - name: "Download Build Artifact - ${{ inputs.version_number }}"
+      - name: "Download Build Artifact - ${{ github.event.inputs.versionNumber }}"
         uses: actions/download-artifact@v4
         with:
-          name: ${{ inputs.versionNumber }}
-          path: .
+          name: ${{ github.event.inputs.versionNumber }}
+          path: ./dist/
 
       - name: "[DEBUG] Display Structure Of All Downloaded Files"
         run: ls -R
 
-      - name: "[DEBUG] Show Distributions"
-        run: ls -lh dist/
-
       - name: "Install Source Distributions"
         run: |
+          python -m venv venv
+          source venv/bin/activate
           find ./dist/*.gz -maxdepth 1 -type f | xargs python -m pip install --force-reinstall --find-links=dist/
 
       - name: "[DEBUG] Check Source Distributions"
         run: |
+          source venv/bin/activate
           sdf --version
