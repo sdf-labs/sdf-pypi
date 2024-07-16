@@ -24,12 +24,6 @@ permissions:
   contents: read
 
 jobs:
-  sanitize-package-name:
-    runs-on: ubuntu-latest
-
-    outputs:
-      name: ${{ steps.package-name.outputs.name }}
-
   test-pypi-release:
     runs-on: ubuntu-latest
     if: inputs.dryRun == true

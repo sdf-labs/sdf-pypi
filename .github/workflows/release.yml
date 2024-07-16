@@ -29,6 +29,10 @@ on:
         required: true
       CICD_APP_PRIVATE_KEY:
         required: true
+      PYPI_API_TOKEN:
+        required: true
+      TEST_PYPI_API_TOKEN:
+        required: true
 
 permissions:
   contents: write
