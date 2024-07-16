@@ -79,7 +79,7 @@ jobs:
         with:
           name: ${{ inputs.versionNumber }}
           path: |
-            ./dist/sdf_cli-${{ inputs.versionNumber }}.tar.gz
+            ./dist/
           retention-days: 1
 
   test-build:
