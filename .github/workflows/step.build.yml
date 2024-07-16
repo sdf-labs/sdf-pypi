@@ -64,6 +64,10 @@ jobs:
           python -m pip install --upgrade setuptools twine
           python -m pip --version
 
+      - name: "Replace Version In Source Code"
+        run: |
+          sed -i "s/^SDF_CLI_VERSION = \".*\"/SDF_CLI_VERSION = \"${{ github.event.inputs.versionNumber }}\"/" sdf_cli/version.py
+
       - name: "Build Distributions"
         run: python setup.py sdist
 
