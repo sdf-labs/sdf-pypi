@@ -16,12 +16,13 @@ on:
 permissions:
   contents: write
 
+env:
+  SDF_CLI_VERSION: ${{ github.event.inputs.versionNumber }}
+
 jobs:
   unit:
     name: Unit Test
     runs-on: ubuntu-latest
-    env:
-      SDF_CLI_VERSION: ${{ github.event.inputs.versionNumber }}
 
     steps:
       - name: "Checkout ${{ github.repository }} Commit"
