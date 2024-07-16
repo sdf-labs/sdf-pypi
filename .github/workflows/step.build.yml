@@ -99,7 +99,7 @@ jobs:
           python -m pip install --upgrade wheel
           python -m pip --version
 
-      - name: "Download Build Artifact - ${{ inputs.version_number }}"
+      - name: "Download Build Artifact - ${{ inputs.versionNumber }}"
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.versionNumber }}

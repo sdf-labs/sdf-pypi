@@ -65,7 +65,7 @@ jobs:
     needs: [create_git_release, build_test_package]
     uses: ./.github/workflows/step.release_pypi.yml
     with:
-      version_number: ${{ inputs.versionNumber }}
+      versionNumber: ${{ inputs.versionNumber }}
       dryRun: ${{ github.event.inputs.dryRun == 'true' }}
 
     secrets:
