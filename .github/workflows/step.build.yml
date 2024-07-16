@@ -107,12 +107,9 @@ jobs:
       - name: "[DEBUG] Display Structure Of All Downloaded Files"
         run: ls -R
 
-      - name: "[DEBUG] Show Distributions"
-        run: ls -lh dist/
-
       - name: "Install Source Distributions"
         run: |
-          find ./dist/*.gz -maxdepth 1 -type f | xargs python -m pip install --force-reinstall --find-links=dist/
+          find ./*.gz -maxdepth 1 -type f | xargs python -m pip install --force-reinstall --find-links=dist/
 
       - name: "[DEBUG] Check Source Distributions"
         run: |
